@@ -22,6 +22,9 @@ struct AppConstants {
     static let correctionMessage = "Enter an integer value between 1 to 100"
     static let carbonEmission = "Carbon Emission:"
     static let totalKM = "Total Kilometers:"
+    static let sampleCarModel = "BMW x1"
+    static let sampleVin = "4354BMHN4TB78"
+    static let note = "**Note:** Scroll or Swipe horizontally to see carbon emission result"
     
     struct Images {
         static let xmarkCircle = "xmark.circle"

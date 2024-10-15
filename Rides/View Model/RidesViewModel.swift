@@ -14,7 +14,8 @@ class VehicleListViewModel: ObservableObject {
     @Published var searchText: String = ""
     private var disposables = Set<AnyCancellable>()
     
-    // Fetching vehicles list based on the input value
+    // MARK: - Setup data for vehicles List Screen
+    // Fetching vehicles list based on the input value from service API call
     func fetchVehicles() {
         // Dismiss Keyboard
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
@@ -30,6 +31,7 @@ class VehicleListViewModel: ObservableObject {
                 }
             } receiveValue: { [weak self] vehiclesResponse in
                 self?.vehicleList = self?.sortBy(type: .vin, defaultVehicalList: vehiclesResponse) ?? []
+                debugPrint(self?.vehicleList)
             }
             .store(in: &disposables)
     }
@@ -45,12 +47,13 @@ class VehicleListViewModel: ObservableObject {
     }
     
     // Returns string for vehicle color or type
-    func giveMeVehicleDetails(isVehicleColor: Bool, details: VehicleListModel) -> String {
+    func configureVehicleDetails(isVehicleColor: Bool, details: VehicleListModel) -> String {
         return "\(isVehicleColor ? AppConstants.color : AppConstants.carTypeColon) \(isVehicleColor ? details.color : details.car_type)"
     }
     
-    // Validation for inputField: returns true if no. not between 1 - 100
-    func validationForInputField() -> Bool {
+    // MARK: - Input Validation
+    // Validation for inputField: returns true if number not between 1 - 100
+    func validationForWrongInputField() -> Bool {
         if let inputNumber = Int(self.searchText) {
             if !(1...100 ~= inputNumber) {
                 return true
@@ -59,27 +62,32 @@ class VehicleListViewModel: ObservableObject {
         return false
     }
     
+    // Enable/Disable submit button based on input and empty values
     func submitButtonDisabled() -> Bool {
-        if self.validationForInputField() {
-            return true
-        } else if searchText.isEmpty {
+        if (self.validationForWrongInputField() || self.searchText.isEmpty) {
             return true
         } else {
             return false
         }
     }
     
+    // MARK: - Carbon Emission
     // calculate the carbon emission from KM
-    func calculateCarbonEmission(kilometers: Double) -> String {
+    func calculateCarbonEmission(kilometers: Double) -> Double {
         if kilometers <= 5000 {
-            return "\(AppConstants.carbonEmission) \(String(format: "%.0f", kilometers))"
+            return kilometers
         } else {
-            let carbon = (5000 + (kilometers - 5000) * 1.5)
-            return "\(AppConstants.carbonEmission) \(String(format: "%.0f", carbon))"
+            return (5000 + (kilometers - 5000) * 1.5)
         }
     }
     
-    func displayKM(km: Double) -> String {
-        return "\(AppConstants.totalKM) \(String(format: "%.0f", km))"
+    // Display total Carbon Emission string
+    func configureCarbonEmissionText(kilometers: Double) -> String {
+        return "\(AppConstants.carbonEmission) \(String(format: "%.0f", calculateCarbonEmission(kilometers: kilometers)))"
+    }
+    
+    // Display total KM string
+    func displayKM(kilometers: Double) -> String {
+        "\(AppConstants.totalKM) \(String(format: "%.0f", kilometers))"
     }
 }

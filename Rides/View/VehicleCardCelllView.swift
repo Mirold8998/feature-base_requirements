@@ -11,7 +11,7 @@ struct VehicleCardCelllView: View {
     let index: Int
     let modelName: String
     let vin: String
-    
+    let showRightChevron: Bool
     var body: some View {
         VStack {
             HStack {
@@ -19,7 +19,6 @@ struct VehicleCardCelllView: View {
                     .padding()
                     .background(Color.green)
                     .cornerRadius(10)
-                
                 Text(modelName)
                     .padding()
                     .font(.headline)
@@ -29,8 +28,10 @@ struct VehicleCardCelllView: View {
             HStack() {
                 Text("\(AppConstants.vinTitle)\(vin)")
                 Spacer()
-                Image(systemName: AppConstants.Images.chevronRight)
-                    .padding(.trailing, 20)
+                if showRightChevron {
+                    Image(systemName: AppConstants.Images.chevronRight)
+                        .padding(.trailing, 20)
+                }
             }.padding(.leading, 20)
             Divider()
         }
@@ -38,5 +39,5 @@ struct VehicleCardCelllView: View {
 }
 
 #Preview {
-    VehicleCardCelllView(index: 0, modelName: "BMW x1", vin: "4354BMHN4TB78")
+    VehicleCardCelllView(index: 0, modelName: AppConstants.sampleCarModel, vin: AppConstants.sampleVin, showRightChevron: true)
 }

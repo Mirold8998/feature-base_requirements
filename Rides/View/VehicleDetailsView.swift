@@ -20,30 +20,40 @@ struct VehicleDetailsView: View {
             .navigationTitle(AppConstants.vehicleDetails)
     }
     
+    // MARK: - Vehicle Details
+    // Display additional fields on Vehicle Details
     var vehicleDetailsPage: some View {
         VStack {
-            VehicleCardCelllView(index: index+1, modelName: vehicleDetails.make_and_model, vin: vehicleDetails.vin)
+            VehicleCardCelllView(index: index+1, modelName: vehicleDetails.make_and_model, vin: vehicleDetails.vin, showRightChevron: false)
             vehicleAdditionalDetails(displayVehicleColor: true)
             vehicleAdditionalDetails(displayVehicleColor: false)
             Divider()
-            Spacer()
-        }
-    }
-    
-    var vehicleCarbonEmissionPage: some View {
-        VStack {
-            Text(viewModel.displayKM(km: vehicleDetails.kilometrage)).padding()
-            Text(viewModel.calculateCarbonEmission(kilometers: vehicleDetails.kilometrage))
+            Text(AppConstants.note)
+                .foregroundStyle(.green)
+                .multilineTextAlignment(.center)
+                .padding([.top, .bottom], 50)
             Divider()
             Spacer()
         }
     }
     
-    // Reusable function to display color and type
+    // Reusable View function to display color and type
     func vehicleAdditionalDetails(displayVehicleColor: Bool) -> some View {
         HStack {
-            Text(viewModel.giveMeVehicleDetails(isVehicleColor: displayVehicleColor, details: vehicleDetails))
+            Text(viewModel.configureVehicleDetails(isVehicleColor: displayVehicleColor, details: vehicleDetails))
                 .padding([.leading, .top], 20)
+            Spacer()
+        }
+    }
+    
+    // MARK: - Vehicle Details with Carbon Emission
+    var vehicleCarbonEmissionPage: some View {
+        VStack {
+            Spacer()
+            Divider()
+            Text(viewModel.displayKM(kilometers: vehicleDetails.kilometrage)).padding()
+            Text(viewModel.configureCarbonEmissionText(kilometers: vehicleDetails.kilometrage))
+            Divider()
             Spacer()
         }
     }

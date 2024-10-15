@@ -23,9 +23,9 @@ struct VehicleListView : View {
                         Spacer()
                         HStack {
                             Image(systemName: AppConstants.Images.magnifyingglassImage)
-                                .foregroundColor(.white)
+                                .foregroundStyle(.white)
                             TextField(AppConstants.inputnoOfVehicles, text: $viewModel.searchText)
-                                .foregroundColor(.white)
+                                .foregroundStyle(.white)
                                 .ignoresSafeArea(.keyboard, edges: .bottom)
                                 .keyboardType(.numberPad)
                             Spacer()
@@ -34,12 +34,12 @@ struct VehicleListView : View {
                                     viewModel.searchText = ""
                                     viewModel.vehicleList.removeAll()
                                 }
-                                .foregroundColor(.white)
+                                .foregroundStyle(.white)
                                 .opacity((viewModel.searchText == "") ? 0 : 1)
                         }
                         .padding(7)
                         .frame(width: 150)
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                         .background(Color.secondary)
                         .cornerRadius(10)
                         
@@ -49,13 +49,12 @@ struct VehicleListView : View {
                                 Text(AppConstants.carType).tag(1)
                             }.pickerStyle(.automatic)
                         }
-                        
                         Group {
                             Button(action: {
                                 viewModel.fetchVehicles()
                             }, label: {
                                 Text(AppConstants.submit)
-                                    .foregroundColor(.white)
+                                    .foregroundStyle(.white)
                                     .font(.headline)
                                     .padding(7)
                                     .background((viewModel.submitButtonDisabled() ? .gray : .blue))
@@ -65,9 +64,9 @@ struct VehicleListView : View {
                         Spacer()
                     }
                     .padding()
-                    if viewModel.validationForInputField() {
+                    if viewModel.validationForWrongInputField() {
                         Text(AppConstants.correctionMessage)
-                            .foregroundColor(.red)
+                            .foregroundStyle(.red)
                             .padding()
                     }
                     
@@ -78,12 +77,13 @@ struct VehicleListView : View {
                             NavigationLink {
                                 VehicleDetailsView(viewModel: viewModel, vehicleDetails: vehicle, index: index)
                             } label: {
-                                VehicleCardCelllView(index: index+1, modelName: vehicle.make_and_model, vin: vehicle.vin)
+                                VehicleCardCelllView(index: index+1, modelName: vehicle.make_and_model, vin: vehicle.vin, showRightChevron: true)
                             }
                         }
                     }
                 }.onChange(of: sortBy) { newValue in
                     viewModel.vehicleList = viewModel.sortBy(type: Rides.sortBy(rawValue: newValue) ?? .carType, defaultVehicalList: viewModel.vehicleList)
+                    debugPrint(viewModel.vehicleList)
                 }
             }
         }
