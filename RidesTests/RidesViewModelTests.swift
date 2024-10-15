@@ -60,15 +60,6 @@ class RidesViewModelTests: XCTestCase {
         
         XCTAssert(result == expectedResult, "Result is \(result) but expected is \(expectedResult)")
     }
-    
-//    func test_validationForInputField_withSearchTextEmpty_shouldReturnFalse() {
-//        let expectedResult = true
-//        
-//        viewModel.searchText = ""
-//        let result = viewModel.validationForWrongInputField()
-//        
-//        XCTAssert(result == expectedResult, "Result is `\(result)` but expected is `\(expectedResult)`")
-//    }
 
     // MARK: - Validation For Carbon Emission Calculation Tests
     
