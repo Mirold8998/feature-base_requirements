@@ -13,13 +13,30 @@ struct VehicleDetailsView: View {
     let index: Int
     
     var body: some View {
+        TabView {
+            vehicleDetailsPage
+            vehicleCarbonEmissionPage
+        }.tabViewStyle(.page(indexDisplayMode: .automatic))
+            .navigationTitle(AppConstants.vehicleDetails)
+    }
+    
+    var vehicleDetailsPage: some View {
         VStack {
             VehicleCardCelllView(index: index+1, modelName: vehicleDetails.make_and_model, vin: vehicleDetails.vin)
             vehicleAdditionalDetails(displayVehicleColor: true)
             vehicleAdditionalDetails(displayVehicleColor: false)
             Divider()
             Spacer()
-        }.navigationTitle(AppConstants.vehicleDetails)
+        }
+    }
+    
+    var vehicleCarbonEmissionPage: some View {
+        VStack {
+            Text(viewModel.displayKM(km: vehicleDetails.kilometrage)).padding()
+            Text(viewModel.calculateCarbonEmission(kilometers: vehicleDetails.kilometrage))
+            Divider()
+            Spacer()
+        }
     }
     
     // Reusable function to display color and type

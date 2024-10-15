@@ -19,6 +19,6 @@ struct VehicleListModel: Codable, Identifiable {
     var car_type: String
     var doors: Int
     var mileage: Int
-    var kilometrage: Int
+    var kilometrage: Double
     var license_plate: String
 }

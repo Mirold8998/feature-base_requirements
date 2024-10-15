@@ -29,7 +29,7 @@ struct VehicleCardCelllView: View {
             HStack() {
                 Text("\(AppConstants.vinTitle)\(vin)")
                 Spacer()
-                Image(systemName: "chevron.right")
+                Image(systemName: AppConstants.Images.chevronRight)
                     .padding(.trailing, 20)
             }.padding(.leading, 20)
             Divider()

@@ -19,14 +19,19 @@ struct AppConstants {
     static let submit = "Submit"
     static let vehicleDetails = "Vehicle Details"
     static let color = "Color:"
+    static let correctionMessage = "Enter an integer value between 1 to 100"
+    static let carbonEmission = "Carbon Emission:"
+    static let totalKM = "Total Kilometers:"
     
     struct Images {
         static let xmarkCircle = "xmark.circle"
         static let magnifyingglassImage = "magnifyingglass"
+        static let chevronRight = "chevron.right"
     }
     
     struct API {
         static let hostName = "random-data-api.com"
         static let path = "/api/vehicle/random_vehicle"
+        static let invalidURL = "Invalid URL"
     }
 }

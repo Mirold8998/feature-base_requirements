@@ -9,7 +9,7 @@ import SwiftUI
 
 struct VehicleListView : View {
     @StateObject private var viewModel: VehicleListViewModel
-    @State var searchText: String = ""
+    
     @State private var sortBy = 0
     init (viewModel: VehicleListViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -24,18 +24,18 @@ struct VehicleListView : View {
                         HStack {
                             Image(systemName: AppConstants.Images.magnifyingglassImage)
                                 .foregroundColor(.white)
-                            TextField(AppConstants.inputnoOfVehicles, text: $searchText)
+                            TextField(AppConstants.inputnoOfVehicles, text: $viewModel.searchText)
                                 .foregroundColor(.white)
                                 .ignoresSafeArea(.keyboard, edges: .bottom)
                                 .keyboardType(.numberPad)
                             Spacer()
                             Image(systemName: AppConstants.Images.xmarkCircle)
                                 .onTapGesture {
-                                    searchText = ""
+                                    viewModel.searchText = ""
                                     viewModel.vehicleList.removeAll()
                                 }
                                 .foregroundColor(.white)
-                                .opacity((searchText == "") ? 0 : 1)
+                                .opacity((viewModel.searchText == "") ? 0 : 1)
                         }
                         .padding(7)
                         .frame(width: 150)
@@ -50,19 +50,26 @@ struct VehicleListView : View {
                             }.pickerStyle(.automatic)
                         }
                         
-                        Button(action: {
-                            viewModel.fetchVehicles(noOfVehicle: searchText)
-                        }, label: {
-                            Text(AppConstants.submit)
-                                .foregroundColor(.white)
-                                .font(.headline)
-                                .padding(7)
-                                .background(.blue)
-                                .cornerRadius(10)
-                        })
+                        Group {
+                            Button(action: {
+                                viewModel.fetchVehicles()
+                            }, label: {
+                                Text(AppConstants.submit)
+                                    .foregroundColor(.white)
+                                    .font(.headline)
+                                    .padding(7)
+                                    .background((viewModel.submitButtonDisabled() ? .gray : .blue))
+                                    .cornerRadius(10)
+                            })
+                        }.allowsHitTesting(!viewModel.submitButtonDisabled())
                         Spacer()
                     }
                     .padding()
+                    if viewModel.validationForInputField() {
+                        Text(AppConstants.correctionMessage)
+                            .foregroundColor(.red)
+                            .padding()
+                    }
                     
                     Spacer()
                     

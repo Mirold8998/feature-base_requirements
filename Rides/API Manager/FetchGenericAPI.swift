@@ -15,7 +15,7 @@ protocol Fetchable {
 extension Fetchable {
     func fetch<T>(with urlComponent: URLComponents, session: URLSession) -> AnyPublisher<T,APIErrors> where T: Decodable {
         guard let url = urlComponent.url else {
-            return Fail(error: APIErrors.request(message: "Invalid URL")).eraseToAnyPublisher()
+            return Fail(error: APIErrors.request(message: AppConstants.API.invalidURL)).eraseToAnyPublisher()
         }
         return session.dataTaskPublisher(for: URLRequest(url: url))
             .mapError { error in
